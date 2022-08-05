@@ -1,12 +1,16 @@
 import React from "react";
 import { Component } from "react";
 
+
 import UserService from "../services/user.service";
+
+// Get ID from URL
+
 
 type Props = {};
 
 type State = {
-  content: string;
+  email: any;
 }
 
 export default class Home extends Component<Props, State> {
@@ -14,20 +18,21 @@ export default class Home extends Component<Props, State> {
     super(props);
 
     this.state = {
-      content: ""
+      email: []
     };
   }
 
   componentDidMount() {
     UserService.getPublicContent().then(
       response => {
+        console.log(response.data.data)
         this.setState({
-          content: response.data
+          email: response.data.data
         });
       },
       error => {
         this.setState({
-          content:
+          email:
             (error.response && error.response.data) ||
             error.message ||
             error.toString()
@@ -40,7 +45,15 @@ export default class Home extends Component<Props, State> {
     return (
       <div className="container">
         <header className="jumbotron">
-          <h3>{this.state.content}</h3>
+          {/* <h3>{this.state.email}kdjfdviejdgiu</h3> */}
+          <ul>
+        {
+          this.state.email
+            .map((person: { id: React.Key; email: string; }) =>
+              <div key={person.id}>{person.email}</div>
+            )
+        }
+      </ul>
         </header>
       </div>
     );

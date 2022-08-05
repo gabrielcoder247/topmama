@@ -4,19 +4,16 @@ const API_URL = 'https://reqres.in/api/login';
 const API_REG_URL = 'https://reqres.in/api/register';
 
 class AuthService {
-  login(username: string, password: string) {
-    return axios
+  async login(username: string, password: string) {
+    const response = await axios
       .post(API_URL + "signin", {
         username,
         password
-      })
-      .then(response => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
-
-        return response.data;
       });
+    if (response.data.accessToken) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+    }
+    return response.data;
   }
 
   logout() {
